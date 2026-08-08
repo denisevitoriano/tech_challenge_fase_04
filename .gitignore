@@ -1,0 +1,31 @@
+# Python-generated files
+__pycache__/
+*.py[oc]
+build/
+dist/
+wheels/
+*.egg-info
+
+# Virtual environments
+.venv
+
+# Dados (não versionar arquivos pesados)
+data/raw/*
+data/processed/*
+!data/**/.gitkeep
+
+# Jupyter
+.ipynb_checkpoints/
+notebooks/.ipynb_checkpoints/
+
+# Saídas
+reports/figures/*
+!reports/figures/.gitkeep
+*.pkl
+*.joblib
+
+# Ambiente / editor
+.env
+.DS_Store
+.vscode/
+.idea/
