@@ -1,0 +1,14 @@
+# Dependências do deploy no Streamlit Community Cloud.
+#
+# O ambiente de desenvolvimento é gerenciado pelo uv (pyproject.toml + uv.lock);
+# este arquivo existe só porque o Streamlit Cloud instala via pip.
+#
+# O índice de CPU do PyTorch é essencial: o pacote `torch` padrão do PyPI para
+# Linux traz as bibliotecas CUDA junto (~2,5 GB) e estoura a cota de build do
+# Streamlit Cloud. A variante CPU tem ~200 MB e é tudo o que se precisa —
+# a máquina do deploy não tem GPU.
+--extra-index-url https://download.pytorch.org/whl/cpu
+
+torch==2.13.0
+transformers>=5.0,<6
+streamlit>=1.61
