@@ -9,18 +9,27 @@ wheels/
 # Virtual environments
 .venv
 
-# Dados (não versionar arquivos pesados)
+# Dados
+# O wikitext bruto (3,3 MB) é reproduzível pela coleta — fica de fora.
 data/raw/*
-data/processed/*
 !data/**/.gitkeep
+
+# O corpus processado (~1 MB comprimido) É versionado de propósito: o notebook
+# do Colab e o app no Streamlit Cloud precisam dele, e ele torna o resultado
+# reproduzível mesmo que o Wikilivros mude.
+data/processed/*
+!data/processed/*.jsonl
+
+# Modelos treinados (~500 MB) vivem no Hugging Face Hub, não no git.
+modelos/
 
 # Jupyter
 .ipynb_checkpoints/
 notebooks/.ipynb_checkpoints/
 
 # Saídas
-reports/figures/*
-!reports/figures/.gitkeep
+# As figuras são versionadas: entram no README e no vídeo.
+!reports/figures/*.png
 *.pkl
 *.joblib
 

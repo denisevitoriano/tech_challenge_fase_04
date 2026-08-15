@@ -1,20 +1,27 @@
 [project]
-name = "tech-challeng-fase-04"
+name = "tech-challenge-fase-04"
 version = "0.1.0"
-description = "Add your description here"
+description = "Gerador de receitas culinárias em português com GPT-2 ajustado"
 readme = "README.md"
 authors = [
     { name = "Denise Vitoriano", email = "denisevitoriano@gmail.com" }
 ]
 requires-python = ">=3.12"
 dependencies = [
+    "accelerate>=1.14.0",
+    "datasets>=5.0.1",
+    "huggingface-hub>=1.27.0",
     "ipykernel>=7.3.0",
+    "ipywidgets>=8.1.8",
     "jupyterlab>=4.6.2",
     "matplotlib>=3.11.1",
     "numpy>=2.5.1",
     "pandas>=3.0.5",
     "scikit-learn>=1.9.0",
     "seaborn>=0.13.2",
+    "streamlit>=1.61.1",
+    "torch>=2.13.0",
+    "transformers>=5.15.0",
 ]
 
 [build-system]
@@ -26,3 +33,13 @@ dev = [
     "pytest>=9.1.1",
     "ruff>=0.16.2",
 ]
+
+[tool.ruff]
+# 100 acomoda as mensagens de log e os regex do parser sem quebras artificiais.
+line-length = 100
+
+[tool.ruff.lint]
+extend-select = ["I", "UP", "B", "C4"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
