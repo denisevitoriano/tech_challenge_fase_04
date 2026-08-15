@@ -109,7 +109,7 @@ with st.sidebar:
         "Temperatura",
         0.1,
         1.5,
-        0.9,
+        1.1,
         0.05,
         help="Baixa: previsível e repetitivo. Alta: criativo e caótico.",
     )

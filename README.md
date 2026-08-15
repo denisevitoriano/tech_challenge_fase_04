@@ -105,11 +105,9 @@ mede quatro eixos:
 | **Diversidade** | Gera coisas diferentes entre si? | distinct-2; Jaccard médio entre amostras |
 | **Estrutura** | A saída é utilizável? | taxa de gerações bem-formadas |
 
-O achado central é o **compromisso da temperatura**: baixá-la melhora a
-estrutura e aumenta a cópia do corpus; subi-la faz o oposto. Os parâmetros
-padrão do playground saem dessa fronteira, medida em
+Os parâmetros padrão do playground saem dessa medição, feita em
 [`notebooks/03_avaliacao.ipynb`](notebooks/03_avaliacao.ipynb), e os controles
-ficam expostos na barra lateral para quem quiser percorrê-la.
+ficam expostos na barra lateral para quem quiser percorrer a fronteira.
 
 ### Resultados
 
@@ -127,6 +125,53 @@ seguinte a `INGREDIENTES:` começa com `- ` é quase gratuito. É justamente por
 isso que a avaliação não para aqui — as métricas de originalidade e
 diversidade existem para verificar se o modelo aprendeu a *compor* receitas ou
 apenas a decorar o molde.
+
+### O compromisso da temperatura
+
+200 receitas geradas, 40 por temperatura, com os demais parâmetros fixos.
+
+![Compromisso da temperatura](reports/figures/03_temperatura.png)
+
+| Temperatura | Bem-formadas | Diversidade (distinct-2) | Trechos vindos do treino | Títulos repetidos |
+|---|---|---|---|---|
+| 0,5 | 100% | 0,33 | 59% | 30% |
+| 0,7 | 100% | 0,39 | 52% | 5% |
+| 0,9 | 100% | 0,51 | 38% | 5% |
+| **1,1** | **97,5%** | **0,62** | **24%** | **0%** |
+| 1,3 | 90% | 0,70 | 14% | 0% |
+
+**O achado que mudou uma decisão do projeto.** A intuição diz que subir a
+temperatura quebra a estrutura — mas não é o que acontece aqui: mesmo em 1,3,
+90% das gerações continuam bem-formadas. Os tokens especiais e a regularidade
+do formato seguram a estrutura mesmo com amostragem agressiva.
+
+O compromisso real, então, não é *estrutura contra criatividade*, e sim
+**cópia contra criatividade**. Isso torna o padrão inicial de 0,9 conservador
+demais: ele pagava 38% de sobreposição com o treino sem necessidade.
+
+**O padrão do playground passou de 0,9 para 1,1**, escolhido por eliminar os
+títulos repetidos, cortar a cópia de 38% para 24% e aumentar a diversidade em
+22%, ao custo de 2,5 pontos percentuais de gerações bem-formadas.
+
+### Originalidade — o modelo copia?
+
+| | |
+|---|---|
+| Maior trecho contíguo copiado do treino | 20 palavras (em temperatura 0,5) |
+| Mediana entre todas as gerações | 10 palavras |
+| Índice de comparação | 220.728 5-gramas distintos |
+
+Nenhuma receita inteira foi reproduzida. O pior caso, de 20 palavras, apareceu
+num pudim de leite condensado — uma preparação tão formulaica que a frase
+"misture bem todos os ingredientes e leve ao fogo baixo" é praticamente a única
+maneira de escrevê-la. É o tipo de sobreposição que se espera, não memorização.
+
+### Limitação encontrada
+
+As receitas geradas são **mais curtas que as reais**: cerca de 2,9 ingredientes
+e 3,3 etapas, contra 6,6 e 5,5 do corpus. O modelo aprendeu o formato e encerra
+cedo demais. Com um corpus maior, ou treinando mais épocas com controle de
+originalidade, esse número provavelmente subiria.
 
 ---
 

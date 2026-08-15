@@ -154,7 +154,7 @@ def gerar_de_prompt(
     prompt: str,
     *,
     n: int = 1,
-    temperature: float = 0.9,
+    temperature: float = 1.1,
     top_p: float = 0.92,
     top_k: int = 50,
     repetition_penalty: float = 1.15,
