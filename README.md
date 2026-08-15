@@ -113,11 +113,20 @@ ficam expostos na barra lateral para quem quiser percorrê-la.
 
 ### Resultados
 
-_A preencher após rodar o treino:_
+| Métrica | Modelo base | Ajustado | Variação |
+|---|---|---|---|
+| Perplexidade (validação) | 37,10 | **5,14** | −86% |
 
-| Métrica | Modelo base | Ajustado |
-|---|---|---|
-| Perplexidade (validação) | — | — |
+Medida sobre os mesmos textos de validação, com os marcadores `<|receita|>` e
+`<|fim|>` removidos — o modelo base nunca os viu, e cobrá-lo por prever um
+token desconhecido mediria o vocabulário adicionado, não a língua.
+
+Uma perplexidade de 5,14 é baixa, e vale ler o número com cuidado: parte do
+ganho vem da **regularidade do formato**. Depois do ajuste, prever que a linha
+seguinte a `INGREDIENTES:` começa com `- ` é quase gratuito. É justamente por
+isso que a avaliação não para aqui — as métricas de originalidade e
+diversidade existem para verificar se o modelo aprendeu a *compor* receitas ou
+apenas a decorar o molde.
 
 ---
 

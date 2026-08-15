@@ -38,3 +38,12 @@ notebooks/.ipynb_checkpoints/
 .DS_Store
 .vscode/
 .idea/
+.ruff_cache/
+.pytest_cache/
+
+# Segredos — token do Hugging Face, chaves de API, secrets do Streamlit.
+*token*.txt
+*.pem
+*.key
+secrets.toml
+.streamlit/secrets.toml
