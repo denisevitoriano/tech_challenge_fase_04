@@ -41,7 +41,7 @@ from tech_challenge_fase_04.dados.corpus import (
     prefixo_por_ingredientes,
     prefixo_por_titulo,
 )
-from tech_challenge_fase_04.modelo import DIRETORIO_MODELO
+from tech_challenge_fase_04.modelo import MODELO_HUB
 
 
 @dataclass
@@ -69,17 +69,32 @@ def dispositivo() -> str:
 
 
 @lru_cache(maxsize=2)
-def carregar(caminho: str = DIRETORIO_MODELO, device: str | None = None):
-    """Carrega modelo e tokenizador, com cache para não recarregar a cada chamada."""
-    if not Path(caminho).exists() and "/" not in caminho.strip("./"):
-        raise FileNotFoundError(
-            f"Modelo não encontrado em {caminho!r}. "
-            "Rode `uv run python -m tech_challenge_fase_04.modelo.treino` antes."
-        )
+def carregar(caminho: str = MODELO_HUB, device: str | None = None):
+    """Carrega modelo e tokenizador, com cache para não recarregar a cada chamada.
 
+    ``caminho`` aceita tanto um diretório local quanto um repositório do Hub —
+    o ``from_pretrained`` resolve os dois. O padrão é o modelo publicado, para
+    que funcione sem treino local.
+    """
     device = device or dispositivo()
-    tokenizador = AutoTokenizer.from_pretrained(caminho)
-    modelo = AutoModelForCausalLM.from_pretrained(caminho).to(device)
+
+    try:
+        tokenizador = AutoTokenizer.from_pretrained(caminho)
+        modelo = AutoModelForCausalLM.from_pretrained(caminho).to(device)
+    except OSError as erro:
+        # O erro cru do transformers não distingue "diretório inexistente" de
+        # "repositório errado no Hub"; a mensagem abaixo cobre os dois casos.
+        local = Path(caminho)
+        if not local.is_dir() and local.parent.exists():
+            dica = (
+                f"O diretório {caminho!r} não existe. Rode o treino antes "
+                "(`uv run python -m tech_challenge_fase_04.modelo.treino`) "
+                f"ou use o modelo publicado ({MODELO_HUB!r})."
+            )
+        else:
+            dica = f"Confira o nome do repositório {caminho!r} no Hub e a conexão de rede."
+        raise FileNotFoundError(f"Não foi possível carregar o modelo. {dica}") from erro
+
     modelo.eval()
     return modelo, tokenizador, device
 
@@ -145,7 +160,7 @@ def gerar_de_prompt(
     repetition_penalty: float = 1.15,
     max_new_tokens: int = 320,
     seed: int | None = None,
-    caminho: str = DIRETORIO_MODELO,
+    caminho: str = MODELO_HUB,
 ) -> list[ReceitaGerada]:
     """Amostra ``n`` continuações para um prompt já montado."""
     modelo, tokenizador, device = carregar(caminho)

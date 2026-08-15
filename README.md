@@ -186,11 +186,14 @@ uv run python -m tech_challenge_fase_04.modelo.treino --epocas 3 --lr 5e-5
 uv run streamlit run app.py
 ```
 
-Por padrão carrega o modelo de `modelos/receitas-gpt2-pt`. Para usar o modelo
-publicado no Hub:
+Funciona sem nenhuma configuração: na ausência de um modelo treinado
+localmente, o app baixa o modelo publicado no Hub. A ordem de precedência é
+variável de ambiente → secret do Streamlit → diretório local de treino → Hub.
+
+Para apontar para outro modelo sem editar código:
 
 ```bash
-MODELO_HF=denisevitoriano/receitas-gpt2-pt uv run streamlit run app.py
+MODELO_HF=outro-usuario/outro-modelo uv run streamlit run app.py
 ```
 
 ---

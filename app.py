@@ -22,7 +22,7 @@ import streamlit as st
 sys.path.insert(0, str(Path(__file__).parent / "src"))
 
 from tech_challenge_fase_04.avaliacao.metricas import indexar_ngramas, taxa_de_copia
-from tech_challenge_fase_04.modelo import DIRETORIO_MODELO
+from tech_challenge_fase_04.modelo import DIRETORIO_MODELO, MODELO_HUB
 from tech_challenge_fase_04.modelo.geracao import (
     ReceitaGerada,
     formatar_para_leitura,
@@ -43,15 +43,31 @@ st.set_page_config(page_title="Cozinheiro Artificial", page_icon="🍲", layout=
 
 
 def origem_do_modelo() -> str:
-    """Prefere o repositório no Hub; cai para o diretório local em desenvolvimento."""
+    """De onde carregar o modelo, na ordem de precedência.
+
+    1. variável de ambiente ``MODELO_HF`` — útil para testar outro modelo sem
+       tocar em arquivo nenhum;
+    2. secret ``MODELO_HF`` — o override do Streamlit Cloud;
+    3. o diretório local de treino, se existir — quem acabou de treinar quer
+       testar o próprio resultado, não o que está publicado;
+    4. o modelo no Hub.
+
+    O passo 4 é o que faz o app funcionar sem nenhuma configuração: o deploy
+    sobe direto e quem clonar o repositório roda com um comando só.
+    """
     if do_ambiente := os.environ.get("MODELO_HF"):
         return do_ambiente
+
     try:
         if "MODELO_HF" in st.secrets:
             return st.secrets["MODELO_HF"]
     except FileNotFoundError:
         pass  # sem secrets.toml em execução local
-    return DIRETORIO_MODELO
+
+    if Path(DIRETORIO_MODELO).is_dir():
+        return DIRETORIO_MODELO
+
+    return MODELO_HUB
 
 
 @st.cache_resource(show_spinner="Carregando o modelo...")

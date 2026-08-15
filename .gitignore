@@ -47,3 +47,6 @@ notebooks/.ipynb_checkpoints/
 *.key
 secrets.toml
 .streamlit/secrets.toml
+# Material pessoal — roteiro do vídeo, anotações de estudo.
+# Fica fora do repositório de propósito.
+pessoal/
