@@ -8,7 +8,7 @@ Tech Challenge — Fase 4 · Pós-graduação em Machine Learning Engineering
 | Entrega | Link |
 |---|---|
 | Playground (Streamlit) | _a preencher após o deploy_ |
-| Modelo (Hugging Face Hub) | _a preencher após a publicação_ |
+| Modelo (Hugging Face Hub) | [`denisevitoriano/receitas-gpt2-pt`](https://huggingface.co/denisevitoriano/receitas-gpt2-pt) |
 | Vídeo de apresentação | _a preencher_ |
 
 ---
@@ -181,7 +181,7 @@ Por padrão carrega o modelo de `modelos/receitas-gpt2-pt`. Para usar o modelo
 publicado no Hub:
 
 ```bash
-MODELO_HF=SEU_USUARIO_HF/receitas-gpt2-pt uv run streamlit run app.py
+MODELO_HF=denisevitoriano/receitas-gpt2-pt uv run streamlit run app.py
 ```
 
 ---

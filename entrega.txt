@@ -20,7 +20,7 @@ https://github.com/denisevitoriano/tech_challenge_fase_04
 
 
 4. MODELO PUBLICADO NO HUGGING FACE HUB
-[PREENCHER APOS A PUBLICACAO]
+https://huggingface.co/denisevitoriano/receitas-gpt2-pt
 
 
 -------------------------------------------------------------------
