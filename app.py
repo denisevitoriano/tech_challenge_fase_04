@@ -79,6 +79,30 @@ def indice_de_copia() -> set[tuple[str, ...]] | None:
     return indexar_ngramas(textos, n=5)
 
 
+def diagnosticar(receita: ReceitaGerada, modo: str) -> str | None:
+    """Aviso a mostrar quando a geração saiu problemática, ou ``None``.
+
+    Não usa ``receita.bem_formada`` de propósito. Aquela propriedade é a métrica
+    da avaliação, e exige dois ingredientes — critério que faz sentido para medir
+    o modelo, mas não para avisar o usuário: no modo "Pelos ingredientes" a lista
+    vem de quem digitou, e reclamar dela seria culpar o modelo por uma escolha
+    de quem está usando o app.
+    """
+    if not receita.preparo:
+        return (
+            "O modelo não chegou a escrever o modo de preparo. "
+            "Aumente o tamanho máximo em tokens, ou gere de novo."
+        )
+    if not receita.titulo:
+        return "O modelo não nomeou o prato. Vale gerar de novo."
+    if len(receita.ingredientes) < 2 and modo != "Pelos ingredientes":
+        return (
+            "O modelo listou um ingrediente só. Gerar de novo costuma resolver — "
+            "receitas curtas são uma limitação conhecida deste modelo."
+        )
+    return None
+
+
 @st.cache_data
 def categorias_disponiveis() -> list[str]:
     """Categorias vistas no treino, ordenadas por frequência."""
@@ -206,11 +230,8 @@ if receitas:
             st.divider()
             st.subheader(f"Receita {numero}")
 
-        if not receita.bem_formada:
-            st.warning(
-                "A geração saiu incompleta. Tente reduzir a temperatura ou "
-                "aumentar o tamanho máximo."
-            )
+        if aviso := diagnosticar(receita, modo):
+            st.warning(aviso)
 
         coluna_receita, coluna_metricas = st.columns([3, 1])
         coluna_receita.markdown(formatar_para_leitura(receita))
