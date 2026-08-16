@@ -255,7 +255,11 @@ MODELO_HF=outro-usuario/outro-modelo uv run streamlit run app.py
 │   ├── 01_exploracao_corpus.ipynb  # EDA — o que há no corpus
 │   ├── 02_treino_colab.ipynb       # fine-tuning na GPU + publicação no Hub
 │   └── 03_avaliacao.ipynb          # as quatro métricas + varredura de temperatura
-├── reports/figures/                # gráficos exportados
+├── reports/
+│   ├── figures/                    # gráficos exportados
+│   ├── perplexidade.json           # base × ajustado
+│   └── avaliacao_temperatura.csv   # a varredura completa
+├── tests/                          # 63 testes do parser, do corpus e das métricas
 └── src/tech_challenge_fase_04/
     ├── dados/
     │   ├── coleta.py               # API do Wikilivros -> wikitext bruto
@@ -268,6 +272,16 @@ MODELO_HF=outro-usuario/outro-modelo uv run streamlit run app.py
         ├── metricas.py             # perplexidade, cópia, diversidade, estrutura
         └── visual.py               # paleta e estilo dos gráficos
 ```
+
+### Testes
+
+```bash
+uv run pytest
+```
+
+Cobrem o parser de wikitext (incluindo os casos que quase estragaram o corpus),
+a montagem do corpus com o split por página, o parsing da saída do modelo e as
+métricas de avaliação. Nenhum exige baixar modelo, então rodam em segundos.
 
 ---
 

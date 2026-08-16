@@ -3,8 +3,9 @@
 Aplicação Streamlit para testar o poder generativo do GPT-2 ajustado.
 Roda local (`uv run streamlit run app.py`) e no Streamlit Community Cloud.
 
-O modelo vem do Hugging Face Hub quando a variável de ambiente / secret
-``MODELO_HF`` está definida; caso contrário, do diretório local de treino.
+Funciona sem configuração: na falta de um modelo treinado localmente, carrega o
+publicado no Hugging Face Hub. Ver :func:`origem_do_modelo` para a ordem de
+precedência completa.
 """
 
 from __future__ import annotations
