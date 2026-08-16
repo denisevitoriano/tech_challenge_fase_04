@@ -5,11 +5,8 @@ Hugging Face Transformers e entregue como um playground no Streamlit.
 
 Tech Challenge — Fase 4 · Pós-graduação em Machine Learning Engineering
 
-| Entrega | Link |
-|---|---|
-| Playground (Streamlit) | **[cozinheiro-artificial.streamlit.app](https://cozinheiro-artificial.streamlit.app/)** |
-| Modelo (Hugging Face Hub) | [`denisevitoriano/receitas-gpt2-pt`](https://huggingface.co/denisevitoriano/receitas-gpt2-pt) |
-| Vídeo de apresentação | _a preencher_ |
+- Playground (Streamlit): **[cozinheiro-artificial.streamlit.app](https://cozinheiro-artificial.streamlit.app/)**
+- Modelo (Hugging Face Hub): [`denisevitoriano/receitas-gpt2-pt`](https://huggingface.co/denisevitoriano/receitas-gpt2-pt)
 
 ---
 
